@@ -12,3 +12,8 @@ Feature: Applicable price lookup
       | 1       | 35455     | 2020-06-14T21:00:00 | 1           | 35.50 |
       | 1       | 35455     | 2020-06-15T10:00:00 | 3           | 30.50 |
       | 1       | 35455     | 2020-06-16T21:00:00 | 4           | 38.95 |
+
+  Scenario: No price is applicable for the given combination
+    Given a request for brand 999, product 1 at 2020-06-14T10:00:00
+    When the applicable price is requested
+    Then the response has status 404

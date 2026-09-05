@@ -22,9 +22,10 @@ mocking the `PriceRepository` output port — no Spring context, no database.
 
 ## BDD integration tests
 
-The 5 scenarios from the test statement are expressed as Gherkin in
-`src/test/resources/features/applicable_price_lookup.feature` (a single `Scenario Outline` with an
-`Examples` table), with step definitions in
+The 5 scenarios from the test statement, plus a not-found scenario, are expressed as Gherkin in
+`src/test/resources/features/applicable_price_lookup.feature` (a `Scenario Outline` with an `Examples`
+table for the 5 happy-path cases, and a separate `Scenario` asserting a `404` when no price is
+applicable), with step definitions in
 `src/test/java/co/medina/test/salesapi/bdd/ApplicablePriceLookupSteps.java`. Steps call the real running
 endpoint through a `TestRestTemplate` (`@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)`,
 configured via `CucumberSpringConfiguration`) and assert on the HTTP response.
@@ -47,3 +48,8 @@ Persistence is an embedded, in-memory H2 database (see [Database](database.md)) 
 `application.properties`.
 
 Docker is not required to run the test suite.
+
+## Coverage
+
+`./gradlew test` generates a JaCoCo report as a finalizer task — HTML at
+`build/reports/jacoco/test/html/index.html`, XML at `build/reports/jacoco/test/jacocoTestReport.xml`.

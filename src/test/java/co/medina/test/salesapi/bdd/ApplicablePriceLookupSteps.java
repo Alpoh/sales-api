@@ -44,4 +44,9 @@ public class ApplicablePriceLookupSteps {
 		assertThat(response.getBody().price()).isEqualByComparingTo(price);
 	}
 
+	@Then("the response has status {int}")
+	public void theResponseHasStatus(int status) {
+		assertThat(response.getStatusCode().value()).isEqualTo(status);
+	}
+
 }
