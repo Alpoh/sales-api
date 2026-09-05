@@ -1,6 +1,9 @@
 # sales-api
 
-Sales API — a Spring Boot 4 application built with Gradle.
+Sales API — a Spring Boot 4 application built with Gradle. Given a chain (brand) id, a product id, and an
+application date, `GET /api/v1/prices` returns the single applicable price rate for that combination
+(highest-priority match, when several rate rows overlap the same window). Built with hexagonal
+architecture; see [docs/architecture.md](docs/architecture.md) for the layer breakdown.
 
 ## Stack
 
@@ -27,6 +30,13 @@ the application process itself, and is seeded on every startup by the Flyway mig
 The app starts on `http://localhost:8080`, seeded with the example dataset. The H2 console is available
 at `http://localhost:8080/h2-console` (JDBC URL `jdbc:h2:mem:sales-api`, user `sa`, empty password) for
 inspecting the seeded data.
+
+```bash
+curl "http://localhost:8080/api/v1/prices?brandId=1&productId=35455&applicationDate=2020-06-14T10:00:00"
+```
+
+Swagger UI is at `http://localhost:8080/swagger-ui.html` — see [docs/api.md](docs/api.md) for the full
+parameter/response reference.
 
 ## Running tests
 

@@ -17,6 +17,14 @@ The app starts on `http://localhost:8080`, backed by an in-memory H2 database th
 example dataset on every startup. The H2 console is available at `http://localhost:8080/h2-console`
 (JDBC URL `jdbc:h2:mem:sales-api`, user `sa`, empty password).
 
+Try the endpoint:
+
+```bash
+curl "http://localhost:8080/api/v1/prices?brandId=1&productId=35455&applicationDate=2020-06-14T10:00:00"
+```
+
+See [API](api.md) for the full parameter/response reference and Swagger UI link.
+
 ## Running tests
 
 ```bash
