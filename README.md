@@ -7,14 +7,16 @@ Sales API — a Spring Boot 4 application built with Gradle.
 - Java 26
 - Spring Boot 4.1.1
 - Spring Web (MVC), Spring Data JPA, Bean Validation
-- PostgreSQL (runtime driver + Testcontainers for tests), Flyway migrations
+- H2 (embedded, in-memory), Flyway migrations
 - Lombok, MapStruct
-- Spring Boot DevTools, Docker Compose support
 
 ## Requirements
 
-- Docker (running locally) — `bootRun` and the test suite both need a Postgres instance:
-  `bootRun` auto-starts the `compose.yaml` Postgres container, tests spin up their own via Testcontainers.
+- Java 26 (via the Gradle toolchain — no need to have it pre-installed if Gradle can provision it)
+
+No Docker, database server, or other external service is required: H2 runs embedded, in-memory, inside
+the application process itself, and is seeded on every startup by the Flyway migrations under
+`src/main/resources/db/migration`.
 
 ## Running locally
 
@@ -22,10 +24,21 @@ Sales API — a Spring Boot 4 application built with Gradle.
 ./gradlew bootRun
 ```
 
+The app starts on `http://localhost:8080`, seeded with the example dataset. The H2 console is available
+at `http://localhost:8080/h2-console` (JDBC URL `jdbc:h2:mem:sales-api`, user `sa`, empty password) for
+inspecting the seeded data.
+
 ## Running tests
 
 ```bash
 ./gradlew test
+```
+
+Run a single test class or method:
+
+```bash
+./gradlew test --tests "co.medina.test.salesapi.SalesApiApplicationTests"
+./gradlew test --tests "co.medina.test.salesapi.SalesApiApplicationTests.contextLoads"
 ```
 
 ## Building
@@ -36,4 +49,4 @@ Sales API — a Spring Boot 4 application built with Gradle.
 
 ## Documentation
 
-See [docs/](docs/README.md) for architecture, database, testing, and API details.
+See [docs/](docs/getting-started.md) for architecture, database, testing, and API details.

@@ -17,21 +17,14 @@ Tests run on JUnit 5 (JUnit Platform).
 
 ## Database in tests
 
-There is no embedded/in-memory database, so any `@SpringBootTest` that touches the datasource needs
-its own Postgres instance via Testcontainers. The `spring-boot-docker-compose` support used by
-`bootRun` does **not** apply here — `developmentOnly` dependencies are not on the `test` task's
-classpath.
-
-The pattern used in `SalesApiApplicationTests`:
+Persistence is an embedded, in-memory H2 database (see [Database](database.md)) — the same one used by
+`bootRun`. No container, no Testcontainers, and no `@ServiceConnection` wiring are needed: a plain
+`@SpringBootTest` gets a working, Flyway-seeded datasource for free, straight from
+`application.properties`.
 
 ```java
-@Testcontainers
 @SpringBootTest
 class SalesApiApplicationTests {
-
-    @Container
-    @ServiceConnection
-    static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:17");
 
     @Test
     void contextLoads() {
@@ -40,10 +33,4 @@ class SalesApiApplicationTests {
 }
 ```
 
-- `@ServiceConnection` auto-configures the Spring datasource from the running container — no manual
-  connection properties needed.
-- `@Container` (from `org.testcontainers.junit.jupiter`) manages the container's lifecycle.
-- **Testcontainers 2.x gotcha**: `org.testcontainers.postgresql.PostgreSQLContainer` is no longer
-  generic — declare it as `PostgreSQLContainer`, not `PostgreSQLContainer<?>`.
-
-Docker must be running locally for tests to pass.
+Docker is not required to run the test suite.
