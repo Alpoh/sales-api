@@ -11,11 +11,11 @@ import java.util.Currency;
 @Mapper(componentModel = "spring")
 public interface PriceEntityMapper {
 
-	@Mapping(target = "price", expression = "java(toMoney(entity.getPrice(), entity.getCurrency()))")
-	Price toDomain(PriceEntity entity);
+    @Mapping(target = "price", expression = "java(toMoney(entity.getPrice(), entity.getCurrency()))")
+    Price toDomain(PriceEntity entity);
 
-	default Money toMoney(BigDecimal amount, String currencyCode) {
-		return new Money(amount, Currency.getInstance(currencyCode));
-	}
+    default Money toMoney(BigDecimal amount, String currencyCode) {
+        return new Money(amount, Currency.getInstance(currencyCode));
+    }
 
 }

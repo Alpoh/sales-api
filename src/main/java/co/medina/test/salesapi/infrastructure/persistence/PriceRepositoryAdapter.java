@@ -12,15 +12,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PriceRepositoryAdapter implements PriceRepository {
 
-	private final PriceJpaRepository priceJpaRepository;
-	private final PriceEntityMapper priceEntityMapper;
+    private final PriceJpaRepository priceJpaRepository;
+    private final PriceEntityMapper priceEntityMapper;
 
-	@Override
-	public Optional<Price> findHighestPriorityApplicablePrice(Long brandId, Long productId, LocalDateTime applicationDate) {
-		return priceJpaRepository
-				.findFirstByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
-						brandId, productId, applicationDate, applicationDate)
-				.map(priceEntityMapper::toDomain);
-	}
+    @Override
+    public Optional<Price> findHighestPriorityApplicablePrice(Long brandId, Long productId, LocalDateTime applicationDate) {
+        return priceJpaRepository
+                .findFirstByBrandIdAndProductIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+                        brandId, productId, applicationDate, applicationDate)
+                .map(priceEntityMapper::toDomain);
+    }
 
 }

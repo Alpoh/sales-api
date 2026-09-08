@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-	@ExceptionHandler(ApplicablePriceNotFoundException.class)
-	public ProblemDetail handleApplicablePriceNotFound(ApplicablePriceNotFoundException exception) {
-		return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
-	}
+    @ExceptionHandler(ApplicablePriceNotFoundException.class)
+    public ProblemDetail handleApplicablePriceNotFound(ApplicablePriceNotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
 
 }

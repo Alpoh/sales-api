@@ -18,24 +18,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PriceEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private Long brandId;
+    private Long brandId;
 
-	private LocalDateTime startDate;
+    private LocalDateTime startDate;
 
-	private LocalDateTime endDate;
+    private LocalDateTime endDate;
 
-	private Long priceListId;
+    private Long priceListId;
 
-	private Long productId;
+    private Long productId;
 
-	private Integer priority;
+    private Integer priority;
 
-	private BigDecimal price;
+    private BigDecimal price;
 
-	private String currency;
+    private String currency;
 
 }

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ObtainApplicablePriceService implements ObtainApplicablePriceUseCase {
 
-	private final PriceRepository priceRepository;
+    private final PriceRepository priceRepository;
 
-	@Override
-	public Price obtainApplicablePrice(ObtainApplicablePriceQuery query) {
-		return priceRepository.findHighestPriorityApplicablePrice(query.brandId(), query.productId(), query.applicationDate())
-				.orElseThrow(() -> new ApplicablePriceNotFoundException(query.brandId(), query.productId(), query.applicationDate()));
-	}
+    @Override
+    public Price obtainApplicablePrice(ObtainApplicablePriceQuery query) {
+        return priceRepository.findHighestPriorityApplicablePrice(query.brandId(), query.productId(), query.applicationDate())
+                .orElseThrow(() -> new ApplicablePriceNotFoundException(query.brandId(), query.productId(), query.applicationDate()));
+    }
 
 }

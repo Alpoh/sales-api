@@ -25,25 +25,25 @@ import java.time.LocalDateTime;
 @Tag(name = "Prices", description = "Applicable price rate lookup")
 public class PricesController {
 
-	private final ObtainApplicablePriceUseCase obtainApplicablePriceUseCase;
-	private final PriceWebMapper priceWebMapper;
+    private final ObtainApplicablePriceUseCase obtainApplicablePriceUseCase;
+    private final PriceWebMapper priceWebMapper;
 
-	@GetMapping
-	@Operation(summary = "Find the single applicable price for a brand, product, and application date")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "The applicable price was found"),
-			@ApiResponse(responseCode = "404", description = "No price is applicable for the given combination")
-	})
-	public ApplicablePriceResponse obtainApplicablePrice(
-			@RequestParam @NotNull
-			@Parameter(description = "Chain/brand identifier", example = "1") Long brandId,
-			@RequestParam @NotNull
-			@Parameter(description = "Product identifier", example = "35455") Long productId,
-			@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-			@Parameter(description = "Date and time the price applies at", example = "2020-06-14T10:00:00") LocalDateTime applicationDate) {
-		var price = obtainApplicablePriceUseCase.obtainApplicablePrice(
-				new ObtainApplicablePriceQuery(brandId, productId, applicationDate));
-		return priceWebMapper.toResponse(price);
-	}
+    @GetMapping
+    @Operation(summary = "Find the single applicable price for a brand, product, and application date")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "The applicable price was found"),
+            @ApiResponse(responseCode = "404", description = "No price is applicable for the given combination")
+    })
+    public ApplicablePriceResponse obtainApplicablePrice(
+            @RequestParam @NotNull
+            @Parameter(description = "Chain/brand identifier", example = "1") Long brandId,
+            @RequestParam @NotNull
+            @Parameter(description = "Product identifier", example = "35455") Long productId,
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            @Parameter(description = "Date and time the price applies at", example = "2020-06-14T10:00:00") LocalDateTime applicationDate) {
+        var price = obtainApplicablePriceUseCase.obtainApplicablePrice(
+                new ObtainApplicablePriceQuery(brandId, productId, applicationDate));
+        return priceWebMapper.toResponse(price);
+    }
 
 }

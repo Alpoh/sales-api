@@ -13,8 +13,8 @@ No Docker or external database is required — persistence runs on an embedded, 
 ./gradlew bootRun
 ```
 
-The app starts on `http://localhost:8080`, backed by an in-memory H2 database that Flyway seeds with the
-example dataset on every startup. The H2 console is available at `http://localhost:8080/h2-console`
+The app starts on `http://localhost:8080`, backed by an in-memory H2 database that Flyway seeds with the example dataset
+on every startup. The H2 console is available at `http://localhost:8080/h2-console`
 (JDBC URL `jdbc:h2:mem:sales-api`, user `sa`, empty password).
 
 Try the endpoint:

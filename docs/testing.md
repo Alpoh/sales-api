@@ -17,18 +17,18 @@ Tests run on JUnit 5 (JUnit Platform).
 
 ## Unit tests
 
-`ObtainApplicablePriceServiceTest` (JUnit 5 + Mockito) exercises the application service in isolation,
-mocking the `PriceRepository` output port — no Spring context, no database.
+`ObtainApplicablePriceServiceTest` (JUnit 5 + Mockito) exercises the application service in isolation, mocking the
+`PriceRepository` output port — no Spring context, no database.
 
 ## BDD integration tests
 
 The 5 scenarios from the test statement, plus a not-found scenario, are expressed as Gherkin in
 `src/test/resources/features/applicable_price_lookup.feature` (a `Scenario Outline` with an `Examples`
-table for the 5 happy-path cases, and a separate `Scenario` asserting a `404` when no price is
-applicable), with step definitions in
-`src/test/java/co/medina/test/salesapi/bdd/ApplicablePriceLookupSteps.java`. Steps call the real running
-endpoint through a `TestRestTemplate` (`@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)`,
-configured via `CucumberSpringConfiguration`) and assert on the HTTP response.
+table for the 5 happy-path cases, and a separate `Scenario` asserting a `404` when no price is applicable), with step
+definitions in
+`src/test/java/co/medina/test/salesapi/bdd/ApplicablePriceLookupSteps.java`. Steps call the real running endpoint
+through a `TestRestTemplate` (`@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)`, configured via
+`CucumberSpringConfiguration`) and assert on the HTTP response.
 
 They run automatically as part of `./gradlew test`, wired through the JUnit Platform's `CucumberTestSuite`
 (`@Suite` + `@IncludeEngines("cucumber")`) — no separate Cucumber CLI/task needed.
@@ -36,8 +36,8 @@ They run automatically as part of `./gradlew test`, wired through the JUnit Plat
 **Spring Boot 4 note:** getting `TestRestTemplate` injectable took two extra pieces beyond
 `RANDOM_PORT`, both specific to Boot 4's module split: the `@AutoConfigureTestRestTemplate` annotation on
 `CucumberSpringConfiguration` (a bean is no longer auto-registered from `RANDOM_PORT` alone), and the
-`spring-boot-starter-restclient` dependency (its autoconfiguration needs `RestTemplateBuilder`, which no
-other starter in this project pulls in). `TestRestTemplate` itself also moved package, from
+`spring-boot-starter-restclient` dependency (its autoconfiguration needs `RestTemplateBuilder`, which no other starter
+in this project pulls in). `TestRestTemplate` itself also moved package, from
 `org.springframework.boot.test.web.client` (Boot 3) to `org.springframework.boot.resttestclient` (Boot 4).
 
 ## Database in tests
