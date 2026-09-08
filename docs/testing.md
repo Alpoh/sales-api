@@ -1,55 +1,49 @@
 # Testing
 
-## Running tests
+## Running the suite
 
 ```bash
 ./gradlew test
 ```
 
-Run a single test class or method:
+To run a single class or method:
 
 ```bash
-./gradlew test --tests "co.medina.test.salesapi.SalesApiApplicationTests"
-./gradlew test --tests "co.medina.test.salesapi.SalesApiApplicationTests.contextLoads"
+./gradlew test --tests "co.medina.test.salesapi.application.service.ObtainApplicablePriceServiceTest"
+./gradlew test --tests "co.medina.test.salesapi.infrastructure.web.PricesControllerValidationTest"
 ```
 
-Tests run on JUnit 5 (JUnit Platform).
+The project uses JUnit 5 with the JUnit Platform and executes Cucumber scenarios through the platform engine.
 
 ## Unit tests
 
-`ObtainApplicablePriceServiceTest` (JUnit 5 + Mockito) exercises the application service in isolation, mocking the
-`PriceRepository` output port — no Spring context, no database.
+`ObtainApplicablePriceServiceTest` verifies the application service behavior in isolation by mocking the repository output
+port. This keeps the tests fast and focused on the use case logic without starting a Spring context.
+
+A second validation layer is exercised by `PricesControllerValidationTest`, which checks malformed input and missing
+required parameters return HTTP 400 responses.
 
 ## BDD integration tests
 
-The 5 scenarios from the test statement, plus a not-found scenario, are expressed as Gherkin in
-`src/test/resources/features/applicable_price_lookup.feature` (a `Scenario Outline` with an `Examples`
-table for the 5 happy-path cases, and a separate `Scenario` asserting a `404` when no price is applicable), with step
-definitions in
-`src/test/java/co/medina/test/salesapi/bdd/ApplicablePriceLookupSteps.java`. Steps call the real running endpoint
-through a `TestRestTemplate` (`@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)`, configured via
-`CucumberSpringConfiguration`) and assert on the HTTP response.
+The request/response scenarios defined in the business statement are implemented as Gherkin features under
+`src/test/resources/features`, including the success cases and the 404 pathway when no price applies.
 
-They run automatically as part of `./gradlew test`, wired through the JUnit Platform's `CucumberTestSuite`
-(`@Suite` + `@IncludeEngines("cucumber")`) — no separate Cucumber CLI/task needed.
+The step definitions live in `src/test/java/co/medina/test/salesapi/bdd` and call the real HTTP endpoint through a
+`TestRestTemplate` configured with `@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)`.
 
-**Spring Boot 4 note:** getting `TestRestTemplate` injectable took two extra pieces beyond
-`RANDOM_PORT`, both specific to Boot 4's module split: the `@AutoConfigureTestRestTemplate` annotation on
-`CucumberSpringConfiguration` (a bean is no longer auto-registered from `RANDOM_PORT` alone), and the
-`spring-boot-starter-restclient` dependency (its autoconfiguration needs `RestTemplateBuilder`, which no other starter
-in this project pulls in). `TestRestTemplate` itself also moved package, from
-`org.springframework.boot.test.web.client` (Boot 3) to `org.springframework.boot.resttestclient` (Boot 4).
+This is wired by the shared Cucumber bootstrap configuration and executed automatically by the `CucumberTestSuite`
+through the JUnit Platform engine.
 
-## Database in tests
+## Embedded database in tests
 
-Persistence is an embedded, in-memory H2 database (see [Database](database.md)) — the same one used by
-`bootRun`. No container, no Testcontainers, and no `@ServiceConnection` wiring are needed: a plain
-`@SpringBootTest` gets a working, Flyway-seeded datasource for free, straight from
-`application.properties`.
-
-Docker is not required to run the test suite.
+The tests run on the same embedded in-memory H2 database used by the application in local development. Flyway seeds the
+example data on startup, so no Docker or external service is required for either `bootRun` or the test suite.
 
 ## Coverage
 
-`./gradlew test` generates a JaCoCo report as a finalizer task — HTML at
-`build/reports/jacoco/test/html/index.html`, XML at `build/reports/jacoco/test/jacocoTestReport.xml`.
+The project generates JaCoCo reports automatically after `test`:
+
+- HTML: `build/reports/jacoco/test/html/index.html`
+- XML: `build/reports/jacoco/test/jacocoTestReport.xml`
+
+The coverage report is useful as a baseline for ongoing code-quality and regression checks.

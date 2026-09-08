@@ -2,41 +2,51 @@
 
 ## Prerequisites
 
-- Java 26 (via the Gradle toolchain — no need to have it pre-installed if Gradle can provision it)
+- Java 26 (via the Gradle toolchain; Gradle can provision it automatically if necessary)
 
-No Docker or external database is required — persistence runs on an embedded, in-memory H2 database
-(see [Database](database.md)).
+No Docker or external database is required. The application uses an embedded in-memory H2 database and Flyway
+migrations to seed the example data on startup. See [database.md](database.md) for the persistence setup.
 
-## Running locally
+## Local run
 
 ```bash
 ./gradlew bootRun
 ```
 
-The app starts on `http://localhost:8080`, backed by an in-memory H2 database that Flyway seeds with the example dataset
-on every startup. The H2 console is available at `http://localhost:8080/h2-console`
-(JDBC URL `jdbc:h2:mem:sales-api`, user `sa`, empty password).
+The application starts on `http://localhost:8080` and exposes:
 
-Try the endpoint:
+- Endpoint: `http://localhost:8080/api/v1/prices`
+- H2 console: `http://localhost:8080/h2-console`
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+
+Example request:
 
 ```bash
 curl "http://localhost:8080/api/v1/prices?brandId=1&productId=35455&applicationDate=2020-06-14T10:00:00"
 ```
 
-See [API](api.md) for the full parameter/response reference and Swagger UI link.
+The embedded H2 database uses these credentials:
 
-## Running tests
+- JDBC URL: `jdbc:h2:mem:sales-api`
+- User: `sa`
+- Password: empty
+
+See [api.md](api.md) for the full request/response contract.
+
+## Running the tests
 
 ```bash
 ./gradlew test
 ```
 
-See [Testing](testing.md) for details — tests use the same embedded H2 database, no container needed.
+This executes the JUnit 5 suite together with the Cucumber integration scenarios against the same embedded H2 instance.
+See [testing.md](testing.md) for a complete overview of the test strategy.
 
-## Building
+## Building the project
 
 ```bash
 ./gradlew build
+./gradlew jacocoTestReport
 ```
 
-Compiles, runs tests, and packages the application.
+The build compiles the application, runs the tests, and generates the JaCoCo reports under `build/reports/jacoco/test`.

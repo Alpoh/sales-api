@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -35,9 +36,9 @@ public class PricesController {
             @ApiResponse(responseCode = "404", description = "No price is applicable for the given combination")
     })
     public ApplicablePriceResponse obtainApplicablePrice(
-            @RequestParam @NotNull
+            @RequestParam @NotNull @Positive
             @Parameter(description = "Chain/brand identifier", example = "1") Long brandId,
-            @RequestParam @NotNull
+            @RequestParam @NotNull @Positive
             @Parameter(description = "Product identifier", example = "35455") Long productId,
             @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @Parameter(description = "Date and time the price applies at", example = "2020-06-14T10:00:00") LocalDateTime applicationDate) {
